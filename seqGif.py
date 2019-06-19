@@ -2,7 +2,8 @@
 #"""
 #Created on Thu Jun  6 12:32:01 2019
 #
-#@author: bmusammartanov
+#@author: VS
+
 import os
 import imageio
 
