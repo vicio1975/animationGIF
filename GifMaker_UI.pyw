@@ -3,6 +3,9 @@
 Created by Vincenzo Sammartano
 email:  v.sammartano@gmail.com
 
+Next is to open a avi to build a gif
+https://www.freecodecamp.org/news/how-to-convert-video-files-to-gif-in-python/
+
 """
 ###Libraries
 import tkinter as tk
