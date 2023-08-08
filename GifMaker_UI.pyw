@@ -17,7 +17,7 @@ import imageio
 
 ##Tkinter Window
 root = tk.Tk()
-root.geometry("300x210+300+300")
+root.geometry("300x220+300+300")
 root.title("GIF MAKER")
 root.resizable(width=False, height=False)
 
@@ -67,20 +67,16 @@ def name():
     This function estimate the frost in evaporator
     """
     var = []
-    var = [v0.get(), "."+v1.get()]
-
-
-    #root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*")))
+    var = [v0.get(), "."+ value_inside.get()]
+    print(var)
     images = []
-    
     filenames = sorted((fn for fn in os.listdir(location) if (fn.startswith(var[0]) and fn.endswith(var[1]) ))) # this iteration technique has no built in order, so sort the frames
     for filename in filenames: images.append(imageio.v2.imread(filename))
-    imageio.mimsave(os.path.join(var[0]+'.gif'), images, duration=0.1, loop=0) # modify duration as needed
+    imageio.mimsave(os.path.join(var[0]+'_.gif'), images, duration=0.1, loop=0) # modify duration as needed
 
 ###end of Functions
 
 ###########Main
-   
 #Text
 text = ["Name prefix", "Figure extension"]
 
@@ -90,11 +86,14 @@ t1 = tk.Entry(frame00, textvariable = v0 , width=14, justify="center",font=f_H12
 t1.grid(row = 1, column=1, padx=5, pady=5)
 t1.insert("end",  "_")
 
+#extension selection
+extension_list = ["jpg", "jpeg", "png", "tiff"]
 t2 = tk.Label(frame00,text=text[1], font=f_H12, bg = '#AEBEDC').grid(row=2,column=0,padx=10,pady=5,sticky='W')
-v1 =  tk.StringVar()
-t2 = tk.Entry(frame00, textvariable = v1 , width=14, justify="center",font=f_H12)
-t2.grid(row = 2, column=1, padx=5, pady=5)
-t2.insert("end", "_")
+value_inside = tk.StringVar(frame00)
+question_menu = tk.OptionMenu(frame00, value_inside, *extension_list)
+question_menu.grid(row = 2, column=1, padx=5, pady=5)
+question_menu.config(font=f_H12, width=8, bg='#FFFFFF')
+value_inside.set("jpeg")
 
 t3 = tk.Button(frame00,text="Set the Figures Directory", font=f_H12, bg = '#AEBEDC',command=folder)
 t3.grid(row=0,column=0,columnspan=2)
