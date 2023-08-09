@@ -61,7 +61,7 @@ def folder():
     """
     global location
     location = filedialog.askdirectory()
-    
+
  # Define a function to show the error message
    
 def name():
@@ -72,11 +72,12 @@ def name():
     var = [value.get(), value_inside.get()]
     images = []
     filenames = sorted((fn for fn in os.listdir(location) if (fn.startswith(var[0]) and fn.endswith(var[1]) ))) # this iteration technique has no built in order, so sort the frames
+    filenames =[(location + "\\" +  fn) for fn in filenames]
     for filename in filenames:
         images.append(imageio.v2.imread(filename))
     output = var[0]+'_.gif'
     loc_name  = 'The Gif ' + output + " is saved here ..." + location
-    imageio.mimsave(os.path.join(var[0]+'_.gif'), images, duration=0.1, loop=0) # modify duration as needed
+    imageio.mimsave(location + "\\" + var[0] + '_.gif', images, duration=0.1, loop=0) # modify duration as needed
     messagebox.showinfo('GIF position', loc_name)  
 
 ###end of Functions
@@ -92,14 +93,14 @@ t1.insert("end",  "_")
 
 #extension selection
 extension_list = ["jpg", "jpeg", "png", "tiff"]
-t2 = tk.Label(frame00,text=text[1], font=f_H12, bg = '#AEBEDC').grid(row=2,column=0,padx=10,pady=5,sticky='W')
+t2 = tk.Label(frame00, text=text[1], font=f_H12, bg = '#AEBEDC').grid(row=2,column=0,padx=10,pady=5,sticky='W')
 value_inside = tk.StringVar(frame00)
 question_menu = tk.OptionMenu(frame00,value_inside, *extension_list)
 question_menu.grid(row = 2, column=1, padx=5, pady=5)
 question_menu.config(font=f_H12, width=8, bg='#FFFFFF')
 value_inside.set("jpeg")
 
-t3 = tk.Button(frame00,text="Set the Figures Directory", font=f_H12, bg = '#AEBEDC',command=folder)
+t3 = tk.Button(frame00,text="Set the Figures Directory", font=f_H12, bg = '#AEBEDC', command=folder)
 t3.grid(row=0,column=0,columnspan=2)
 ##########
 
@@ -114,7 +115,6 @@ run_butt.pack(side='left', fill='x', ipadx=2, padx=3, pady=5)
 ex = tk.Button(frame_N, text="EXIT", command=ex, font=f_H12)
 ex.config(height=1, width=10)
 ex.pack(side='right', fill='x', ipadx=2, padx=3, pady=5)
-
 
 ##########################
 if __name__ == "__main__":
