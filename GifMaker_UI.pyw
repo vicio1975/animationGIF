@@ -72,6 +72,7 @@ def create_gif():
     files = os.listdir(location)
     file_filtered = [file for file in files if file.startswith(prefix) and file.endswith(extension)]
     file_filtered.sort(key=extract_numeric_part)
+    print(file_filtered)
     
     if not file_filtered:
         messagebox.showerror("Error", "No matching images found.")
