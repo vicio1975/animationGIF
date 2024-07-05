@@ -11,8 +11,11 @@ import tkinter as tk
 from tkinter import messagebox, filedialog, font
 import os
 from PIL import Image
+from imageio import mimsave
+
 import imageio
 import re
+import numpy as np
 
 # Tkinter Window
 root = tk.Tk()
@@ -72,22 +75,32 @@ def create_gif():
     files = os.listdir(location)
     file_filtered = [file for file in files if file.startswith(prefix) and file.endswith(extension)]
     file_filtered.sort(key=extract_numeric_part)
-    print(file_filtered)
     
     if not file_filtered:
         messagebox.showerror("Error", "No matching images found.")
         return
     
-    for file_name in file_filtered:
-        file_path = os.path.join(location, file_name)
-        img = Image.open(file_path)
-        images.append(img)
-    
-    output = f"{prefix}_.gif"
-    gif_path = os.path.join(location, output)
-    imageio.mimsave(gif_path, images, duration=duration, loop=0)
-    messagebox.showinfo("GIF Created", f"The GIF {output} is saved here:\n{location}")
+    try:
+        # Open all images to get the size of the first image
+        first_image = Image.open(os.path.join(location, file_filtered[0]))
+        first_image_size = first_image.size
+        images.append(first_image)
 
+        for file_name in file_filtered[1:]:
+            file_path = os.path.join(location, file_name)
+            img = Image.open(file_path)
+            # Resize image to match the first image size if different
+            if img.size != first_image_size:
+                img = img.resize(first_image_size, Image.ANTIALIAS)
+            images.append(img)
+        
+        output = f"{prefix}_.gif"
+        gif_path = os.path.join(location, output)
+        mimsave(gif_path, images, duration=duration, loop=0)
+        messagebox.showinfo("GIF Created", f"The GIF {output} is saved here:\n{location}")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+        
 # UI Elements
 t1 = tk.Label(frame00, text="Name prefix", font=f_H12, bg='#AEBEDC')
 t1.grid(row=1, column=0, padx=10, pady=5)
